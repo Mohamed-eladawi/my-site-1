@@ -306,4 +306,45 @@ margin-top: 20px;
 padding: 25px;
 font-size: 16px;
 line-height: 1.6;
+
+}
+/* Mobile Responsive */
+
+@media (max-width: 768px){
+
+.layout{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+padding:15px;
+}
+
+.search-bar{
+flex-direction:column;
+gap:10px;
+}
+
+.stats{
+flex-direction:column;
+}
+
+.charts{
+flex-direction:column;
+}
+
+.chart-box{
+width:100%;
+}
+
+table{
+font-size:14px;
+}
+
 }
