@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+<h2>Tech Jobs Dashboard</h2>
+
+<input type="text" id="username" placeholder="Username">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+function login(){
+
+let user = document.getElementById("username").value;
+let pass = document.getElementById("password").value;
+
+if(user === "admin" && pass === "1234"){
+
+window.location.href = "index.html";
+
+}else{
+
+alert("Wrong username or password");
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

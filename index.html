@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Tech Jobs Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2 class="logo">Jobs</h2>
+
+<ul class="menu">
+
+<li><a href="index.html">📊 Dashboard</a></li>
+
+<li><a href="analytics.html">📈 Analytics</a></li>
+
+<li><a href="data.html">📂 Data</a></li>
+
+<li><a href="settings.html">⚙ Settings</a></li>
+
+<li><a href="about.html">ℹ About</a></li>
+
+</ul>
+<button id="darkModeBtn">🌙 Dark Mode</button>
+</div>
+
+
+<!-- Main Content -->
+
+<div class="main">
+
+<h1 class="title">Tech Jobs Market Dashboard</h1>
+
+
+<!-- Search + Top Card -->
+
+<div class="search-bar">
+
+<div class="search-left">
+
+<input type="text" id="searchInput" placeholder="Search job title...">
+
+<input list="locationsList" id="locationFilter" placeholder="Search location...">
+
+<datalist id="locationsList">
+<option value="All Locations">
+</datalist>
+
+<button id="downloadBtn">Download Jobs CSV</button>
+
+</div>
+
+<div class="top-card">
+<h3>Total Jobs</h3>
+<p id="topTotalJobs"></p>
+</div>
+
+</div>
+
+
+<!-- Stats Cards -->
+
+<div class="stats">
+
+<div class="card">
+<span class="icon">📊</span>
+<h3>Total Jobs</h3>
+<p id="totalJobs"></p>
+</div>
+
+<div class="card">
+<span class="icon">🏢</span>
+<h3>Total Companies</h3>
+<p id="totalCompanies"></p>
+</div>
+
+<div class="card">
+<span class="icon">📍</span>
+<h3>Total Locations</h3>
+<p id="totalLocations"></p>
+</div>
+
+</div>
+
+
+<!-- Charts -->
+
+<div class="charts">
+
+<div class="chart-box">
+<h3>Jobs per Location</h3>
+<canvas id="locationChart"></canvas>
+</div>
+
+<div class="chart-box">
+<h3>Top Companies</h3>
+<canvas id="companyChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- Jobs Table -->
+
+<h3>Jobs Table</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Title</th>
+<th>Company</th>
+<th>Location</th>
+</tr>
+</thead>
+
+<tbody id="jobsTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

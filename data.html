@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Data</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+<h2 class="logo">Jobs</h2>
+
+<ul class="menu">
+
+<li><a href="index.html">📊 Dashboard</a></li>
+
+<li><a href="analytics.html">📈 Analytics</a></li>
+
+<li><a href="data.html">📂 Data</a></li>
+
+<li><a href="settings.html">⚙ Settings</a></li>
+
+<li><a href="about.html">ℹ About</a></li>
+
+</ul>
+
+</div>
+
+
+<div class="main">
+
+<h1 class="title">Jobs Dataset</h1>
+
+<div class="export-buttons">
+
+<button id="exportExcel">Export Excel</button>
+
+<button id="exportPDF">Export PDF</button>
+
+</div>
+
+
+<div class="charts">
+
+<div class="chart-box">
+<h3>Jobs by Location</h3>
+<canvas id="locationChart"></canvas>
+</div>
+
+<div class="chart-box">
+<h3>Jobs by Company</h3>
+<canvas id="companyChart"></canvas>
+</div>
+
+</div>
+
+
+<input type="text" id="searchData" placeholder="Search dataset...">
+
+<table>
+
+<thead>
+<tr>
+<th>Job Title</th>
+<th>Company</th>
+<th>Location</th>
+</tr>
+</thead>
+
+<tbody id="dataTable">
+</tbody>
+
+</table>
+
+<div id="pagination"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let dataset = [];
+let filteredData = [];
+
+let currentPage = 1;
+let rowsPerPage = 10;
+
+let locationChart;
+let companyChart;
+
+
+/* load data */
+
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+
+dataset = data;
+filteredData = data;
+
+displayTable();
+setupPagination();
+updateCharts(filteredData);
+
+});
+
+
+/* display table */
+
+function displayTable(){
+
+const table = document.getElementById("dataTable");
+table.innerHTML = "";
+
+let start = (currentPage - 1) * rowsPerPage;
+let end = start + rowsPerPage;
+
+let pageData = filteredData.slice(start, end);
+
+pageData.forEach(job => {
+
+let row = `
+<tr>
+<td>${job.title}</td>
+<td>${job.company}</td>
+<td>${job.location}</td>
+</tr>
+`;
+
+table.innerHTML += row;
+
+});
+
+}
+
+
+/* pagination */
+
+function setupPagination(){
+
+const pagination = document.getElementById("pagination");
+pagination.innerHTML = "";
+
+let pageCount = Math.ceil(filteredData.length / rowsPerPage);
+
+for(let i=1;i<=pageCount;i++){
+
+let btn = document.createElement("button");
+btn.innerText = i;
+
+btn.addEventListener("click", function(){
+
+currentPage = i;
+displayTable();
+
+});
+
+pagination.appendChild(btn);
+
+}
+
+}
+
+
+/* search */
+
+document.getElementById("searchData").addEventListener("keyup", function(){
+
+let value = this.value.toLowerCase();
+
+filteredData = dataset.filter(job =>
+job.title.toLowerCase().includes(value) ||
+job.company.toLowerCase().includes(value) ||
+job.location.toLowerCase().includes(value)
+);
+
+currentPage = 1;
+
+displayTable();
+setupPagination();
+updateCharts(filteredData);
+
+});
+
+
+/* charts */
+
+function updateCharts(data){
+
+let locations = {};
+let companies = {};
+
+data.forEach(job => {
+
+locations[job.location] = (locations[job.location] || 0) + 1;
+companies[job.company] = (companies[job.company] || 0) + 1;
+
+});
+
+
+if(locationChart) locationChart.destroy();
+if(companyChart) companyChart.destroy();
+
+
+locationChart = new Chart(
+document.getElementById("locationChart"),
+{
+type:"bar",
+data:{
+labels:Object.keys(locations),
+datasets:[{
+label:"Jobs by Location",
+data:Object.values(locations)
+}]
+}
+});
+
+
+companyChart = new Chart(
+document.getElementById("companyChart"),
+{
+type:"pie",
+data:{
+labels:Object.keys(companies).slice(0,10),
+datasets:[{
+label:"Jobs by Company",
+data:Object.values(companies).slice(0,10)
+}]
+}
+});
+
+}
+
+
+/* export excel */
+
+document.getElementById("exportExcel").addEventListener("click", function(){
+
+let csv = "Title,Company,Location\n";
+
+filteredData.forEach(job => {
+
+csv += `${job.title},${job.company},${job.location}\n`;
+
+});
+
+let blob = new Blob([csv], {type:"text/csv"});
+
+let url = URL.createObjectURL(blob);
+
+let a = document.createElement("a");
+
+a.href = url;
+a.download = "jobs_data.csv";
+
+a.click();
+
+});
+
+
+/* export pdf */
+
+document.getElementById("exportPDF").addEventListener("click", function(){
+
+const { jsPDF } = window.jspdf;
+
+let doc = new jsPDF();
+
+let y = 10;
+
+doc.text("Jobs Dataset",10,y);
+
+y += 10;
+
+filteredData.slice(0,30).forEach(job => {
+
+doc.text(`${job.title} | ${job.company} | ${job.location}`,10,y);
+
+y += 8;
+
+});
+
+doc.save("jobs_data.pdf");
+
+});
+/* redirect on refresh */
+
+window.onload = function(){
+
+if (performance.navigation.type === 1){
+
+window.location.href = "index.html";
+
+}
+
+};
+</script>
+
+</body>
+
+</html>

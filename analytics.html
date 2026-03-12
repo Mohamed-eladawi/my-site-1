@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Analytics</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2 class="logo">Jobs</h2>
+
+<ul class="menu">
+
+<li><a href="index.html">📊 Dashboard</a></li>
+
+<li><a href="analytics.html">📈 Analytics</a></li>
+
+<li><a href="data.html">📂 Data</a></li>
+
+<li><a href="settings.html">⚙ Settings</a></li>
+
+<li><a href="about.html">ℹ About</a></li>
+
+</ul>
+
+</div>
+
+
+<!-- Main Content -->
+
+<div class="main">
+
+<h1 class="title">Jobs Analytics</h1>
+
+<div class="charts">
+
+<div class="chart-box">
+<h3>Jobs by Company</h3>
+<canvas id="companyChart"></canvas>
+</div>
+
+<div class="chart-box">
+<h3>Jobs by Location</h3>
+<canvas id="locationChart"></canvas>
+</div>
+
+</div>
+
+<div class="chart-box">
+<h3>Top Job Titles</h3>
+<canvas id="titleChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* load data */
+
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+
+/* counts */
+
+let companies = {};
+let locations = {};
+let titles = {};
+
+data.forEach(job => {
+
+companies[job.company] = (companies[job.company] || 0) + 1;
+locations[job.location] = (locations[job.location] || 0) + 1;
+titles[job.title] = (titles[job.title] || 0) + 1;
+
+});
+
+
+/* company chart */
+
+new Chart(document.getElementById("companyChart"),{
+
+type:"bar",
+
+data:{
+labels:Object.keys(companies).slice(0,10),
+
+datasets:[{
+label:"Jobs by Company",
+data:Object.values(companies).slice(0,10)
+}]
+
+}
+
+});
+
+
+/* location chart */
+
+new Chart(document.getElementById("locationChart"),{
+
+type:"pie",
+
+data:{
+labels:Object.keys(locations).slice(0,10),
+
+datasets:[{
+label:"Jobs by Location",
+data:Object.values(locations).slice(0,10)
+}]
+
+}
+
+});
+
+
+/* title chart */
+
+new Chart(document.getElementById("titleChart"),{
+
+type:"bar",
+
+data:{
+labels:Object.keys(titles).slice(0,10),
+
+datasets:[{
+label:"Top Job Titles",
+data:Object.values(titles).slice(0,10)
+}]
+
+}
+
+});
+
+});
+/* redirect on refresh */
+
+window.onload = function(){
+
+if (performance.navigation.type === 1){
+
+window.location.href = "index.html";
+
+}
+
+};
+</script>
+
+</body>
+
+</html>

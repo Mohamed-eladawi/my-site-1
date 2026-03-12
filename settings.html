@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Settings</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2 class="logo">Jobs</h2>
+
+<ul class="menu">
+
+<li><a href="index.html">📊 Dashboard</a></li>
+
+<li><a href="analytics.html">📈 Analytics</a></li>
+
+<li><a href="data.html">📂 Data</a></li>
+
+<li><a href="settings.html">⚙ Settings</a></li>
+
+<li><a href="about.html">ℹ About</a></li>
+
+</ul>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main">
+
+<h1 class="title">Settings</h1>
+
+<div class="card">
+
+<h3>Dashboard Settings</h3>
+
+<button id="darkModeBtn">🌙 Toggle Dark Mode</button>
+
+<br><br>
+
+<button id="resetFilters">🔄 Reset Filters</button>
+
+<br><br>
+
+<button id="downloadData">⬇ Download Dataset</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* dark mode */
+
+document.getElementById("darkModeBtn").addEventListener("click", function(){
+document.body.classList.toggle("dark-mode");
+});
+
+
+/* download dataset */
+
+document.getElementById("downloadData").addEventListener("click", function(){
+window.location.href = "data.json";
+});
+
+
+/* reset filters */
+
+document.getElementById("resetFilters").addEventListener("click", function(){
+alert("Filters will reset when you return to dashboard");
+});
+/* redirect on refresh */
+
+window.onload = function(){
+
+if (performance.navigation.type === 1){
+
+window.location.href = "index.html";
+
+}
+
+};
+</script>
+
+</body>
+
+</html>
