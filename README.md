@@ -2,6 +2,7 @@
 
 This project is a web scraping and data visualization dashboard.
 
+![Dashboard Screenshot](https://github.com/user-attachments/assets/ecfeac3c-b461-4e3a-9f4d-8cc983163abe)
 ## Features
 - Web scraping using Python
 - JSON dataset generation
